@@ -8,6 +8,8 @@ using System.Security.Cryptography;
 
 namespace CorpEstate.Controllers
 {
+    [ApiController]
+    [Route("api/Auth")]
     public class AuthController : ControllerBase
     {
         private readonly IUserRepository _dbUser;
@@ -21,7 +23,7 @@ namespace CorpEstate.Controllers
             _jwtService = jwtService;
         }
 
-        [HttpPost("Register User")]
+        [HttpPost("Register_User")]
         public async Task<ActionResult<User>> Register(UserCreateDTO newUser)
         {
             _jwtService.CreatePasswordHash(newUser.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -35,7 +37,7 @@ namespace CorpEstate.Controllers
             
         }
 
-        [HttpPost("Login User")]
+        [HttpPost("Login_User")]
         public async Task<ActionResult<string>> Login(UserLoginDTO request)
         {
             if(request.Name == "AdminA" && request.Password == "AdminA@123")

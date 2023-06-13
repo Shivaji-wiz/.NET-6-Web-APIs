@@ -26,7 +26,7 @@ namespace CorpEstate.Controllers
             this._response = new APIResponse();
         }
 
-        [HttpGet]
+        [HttpGet("GetUnapprovedProperties")]
         public async Task<ActionResult<APIResponse>> GetProperties()
         {
             try
@@ -45,7 +45,7 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpPut]
+        [HttpPut("ApproveProperty")]
         public async Task<ActionResult<APIResponse>> ApproveProperty(int id, [FromBody] ApprovePropertyDTO ApproveProperty)
         {
             try
@@ -61,10 +61,11 @@ namespace CorpEstate.Controllers
                 ApproveProperty.Property_Name = property.Property_Name;
                 ApproveProperty.Property_Price = property.Property_Price;
                 ApproveProperty.Property_Description = property.Property_Description;
+                ApproveProperty.ImageUrl= property.ImageUrl;
                 ApproveProperty.UserID = property.UserID;
                 ApproveProperty.Seller_Name = property.Seller_Name;
                 ApproveProperty.Seller_Contact = property.Seller_Contact;
-                ApproveProperty.Property_CreatedTime = DateTime.Now;
+                ApproveProperty.Property_ApprovedTime = DateTime.Now;
                 ApproveProperty.Approved = true;
 
                 Property model = _mapper.Map<Property>(ApproveProperty);
@@ -85,7 +86,8 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpDelete("{id:int}", Name = "RejectProperty")]
+        //[HttpDelete("{id:int}", Name = "RejectProperty")]
+        [HttpDelete("RejectProperty/{id:int}")]
         public async Task<ActionResult<APIResponse>> RejectProperty(int id)
         {
             try

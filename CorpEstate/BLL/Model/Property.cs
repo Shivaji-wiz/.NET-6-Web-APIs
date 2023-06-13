@@ -22,7 +22,7 @@ namespace CorpEstate.BLL.Model
 
         [ForeignKey("User")]
         public int UserID { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         [Required]
         public string Seller_Name { get; set; }

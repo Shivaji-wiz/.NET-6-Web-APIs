@@ -16,7 +16,7 @@ namespace CorpEstate.DAL.DTO
         public string Property_Description { get; set; }
         [Required]
         public string ImageUrl { get; set; }
-        public DateTime Property_CreatedTime { get; set; }
+        public DateTime Property_ApprovedTime { get; set; }
 
         public int UserID { get; set; }
         [Required]

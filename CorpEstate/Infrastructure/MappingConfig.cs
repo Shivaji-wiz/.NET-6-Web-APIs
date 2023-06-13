@@ -17,6 +17,7 @@ namespace CorpEstate.Infrastructure
             CreateMap<User, UserCreateDTO>().ReverseMap();
             CreateMap<User, UserLoginDTO>().ReverseMap();
             CreateMap<User, User>().ReverseMap();
+            CreateMap<PropertyReview, PropertyReviewDTO>();
         }
     }
 }

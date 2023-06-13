@@ -27,7 +27,7 @@ namespace CorpEstate.Controllers
             _response = new APIResponse();
         }
 
-        [HttpGet]
+        [HttpGet("GetAllUsers")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<APIResponse>> GetAllUsers()
         {
@@ -47,7 +47,7 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpGet("{id:int}", Name = "GetUserProperties")]
+        [HttpGet("GetUserProperties/{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<APIResponse>> GetAllUserProperty(int id)
         {
@@ -67,7 +67,7 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpDelete("{id:int}", Name = "DeleteUser")]
+        [HttpDelete("DeleteUser/{id:int}")]
         [Authorize(Roles = "Admin,Buyer,Seller")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -21,7 +21,7 @@ namespace CorpEstate.DAL.DTO
 
         [ForeignKey("User")]
         public int UserID { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
         [Required]
         public string Seller_Name { get; set; }
         [Required]

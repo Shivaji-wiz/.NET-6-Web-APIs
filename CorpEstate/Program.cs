@@ -8,13 +8,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors(options => options.AddPolicy(name: "CorpEstateOrigins",
+policy =>
+{
+    policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+}));
 
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
@@ -66,6 +70,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseCors("CorpEstateOrigins");
 
 app.MapControllers();
 

@@ -19,6 +19,7 @@ namespace CorpEstate.DAL.DTO
         public DateTime Property_CreatedTime { get; set; }
         [Required]
         public DateTime Property_UpdatedTime { get; set; }
+        public int UserID { get; set; }
         [Required]
         public string Seller_Name { get; set; }
         [Required]

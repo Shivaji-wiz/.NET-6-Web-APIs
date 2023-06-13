@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CorpEstate.Controllers
 {
-    [Route("api/CRUDController")]
+    [Route("api/Crud")]
     [ApiController]
     public class CRUDController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace CorpEstate.Controllers
             this._response = new APIResponse();
         }
 
-        [HttpGet]
+        [HttpGet("GetAllProperties")]
         public async Task<ActionResult<APIResponse>> GetProperties()
         {
             try
@@ -45,7 +45,7 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpGet("{id:int}",Name = "GetProperty")]
+        [HttpGet("{id:int}", Name = "GetProperty")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -83,8 +83,8 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin,Buyer")]
+        [HttpPost("CreateNewProperty")]
+        [Authorize(Roles = "Admin,Seller")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -123,8 +123,8 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpPut]
-        [Authorize(Roles = "Admin,Buyer")]
+        [HttpPut("UpdateExistingProperty")]
+        [Authorize(Roles = "Admin,Seller")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<APIResponse>> UpdateVilla(int id, [FromBody]UpdatePropertyDTO UpdateProperty)
@@ -153,8 +153,8 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpDelete("{id:int}",Name = "DeleteProperty")]
-        [Authorize(Roles = "Admin,Buyer")]
+        [HttpDelete("DeleteProperty/{id:int}")]
+        [Authorize(Roles = "Admin,Seller")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
