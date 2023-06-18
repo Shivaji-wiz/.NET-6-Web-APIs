@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options => options.AddPolicy(name: "CorpEstateOrigins",
 policy =>
 {
-    policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
 }));
 
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
@@ -46,6 +46,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,

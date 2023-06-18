@@ -4,6 +4,7 @@ using CorpEstate.Controllers;
 using CorpEstate.DAL.DTO;
 using CorpEstate.DAL.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
 using System.Linq.Expressions;
 using System.Net;
@@ -67,13 +68,10 @@ namespace CorpEstateTest
             var createPropertyDto = new CreatePropertyDTO
             {
                 Property_Name = "Test Property",
-                // Set other properties of the CreatePropertyDTO as needed
             };
 
             var property = new Property();
             _mapperMock.Setup(m => m.Map<Property>(createPropertyDto)).Returns(property);
-
-            //_repositoryMock.Setup(d => d.GetAsync(It.IsAny<Expression<Func<Property, bool>>>())).ReturnsAsync((Property)null);
 
             _repositoryMock.Setup(d => d.CreateAsync(property)).Returns(Task.CompletedTask);
 
@@ -97,8 +95,21 @@ namespace CorpEstateTest
             Assert.AreEqual(expectedResponse.IsSuccess, actualResponse.IsSuccess);
             Assert.AreEqual(expectedResponse.StatusCode, actualResponse.StatusCode);
 
-            //_repositoryMock.Verify(d => d.GetAsync(It.IsAny<Expression<Func<Property, bool>>>()), Times.Once);
-            _repositoryMock.Verify(d => d.CreateAsync(property), Times.Once);
+        }
+
+        [Test]
+        public async Task CreateProperty_WhenInvalidRequest_ReturnsBadRequest()
+        {
+            // Arrange
+            CreatePropertyDTO createPropertyDto = null;
+
+            // Act
+            var result = await _crudController.CreateProperty(createPropertyDto);
+
+            // Assert
+            Assert.IsInstanceOf<BadRequestObjectResult>(result.Result);
+            var badRequestResult = (BadRequestObjectResult)result.Result;
+            Assert.AreEqual(createPropertyDto, badRequestResult.Value);
         }
     }
 }

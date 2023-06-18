@@ -111,7 +111,7 @@ namespace CorpEstate.Controllers
                 await _dbProp.CreateAsync(property);
                 _response.Result = _mapper.Map<PropertyDTO>(property);
                 _response.IsSuccess = true;
-                _response.StatusCode = HttpStatusCode.OK;
+                _response.StatusCode = HttpStatusCode.Created;
 
                 return CreatedAtRoute("GetProperty", new { id = property.Property_ID }, _response);
             }

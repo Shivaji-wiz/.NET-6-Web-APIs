@@ -44,7 +44,12 @@ namespace CorpEstate.Controllers
             {
                 var model = _mapper.Map<User>(request);
                 string Token = _jwtService.CreateAdminToken(model);
-                return Ok(Token);
+                //return Ok(Token);
+                return Ok(new
+                {
+                    Token = Token,
+                    Message = "Login Success!"
+                });
             }
             else
             {
@@ -62,7 +67,12 @@ namespace CorpEstate.Controllers
                     return BadRequest("Password Invalid");
                 }
                 string Token = _jwtService.CreateUserToken(user);
-                return Ok(Token);
+                //return Ok(Token);
+                return Ok(new
+                {
+                    Token = Token,
+                    Message = "Login Success!"
+                });
                 //return Ok("Token valid!!");
             }
         }
