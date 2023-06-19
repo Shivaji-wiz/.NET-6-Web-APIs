@@ -17,11 +17,13 @@ namespace CorpEstate.Controllers
         //private readonly ApplicationDbContext _db;
         protected APIResponse _response;
         private readonly IPropertyRepository _dbProp;
+        private readonly IPropertyReviewRepository _dbPropRe;
         private readonly IMapper _mapper;
 
-        public CRUDController(IPropertyRepository dbProp, IMapper mapper)
+        public CRUDController(IPropertyRepository dbProp,IPropertyReviewRepository dbPropRe ,IMapper mapper)
         {
             _dbProp = dbProp;
+            _dbPropRe = dbPropRe;
             _mapper = mapper;
             this._response = new APIResponse();
         }
@@ -104,6 +106,7 @@ namespace CorpEstate.Controllers
                 }
 
                 Property property = _mapper.Map<Property>(CreateProperty);
+                property.Property_CreatedTime= DateTime.UtcNow;
                 property.Approved = false;
 
                 //_db.Properties.AddAsync(model);
@@ -123,7 +126,7 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpPut("UpdateExistingProperty")]
+        [HttpPut("UpdateExistingProperty/{id:int}")]
         [Authorize(Roles = "Admin,Seller")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -137,6 +140,7 @@ namespace CorpEstate.Controllers
                 }
 
                 Property model = _mapper.Map<Property>(UpdateProperty);
+                model.Property_UpdatedTime = DateTime.Now;
                 //_db.Properties.Update(model);
                 //await _db.SaveChangesAsync();
                 await _dbProp.UpdateAsync(model);
@@ -179,6 +183,58 @@ namespace CorpEstate.Controllers
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
+        [HttpGet("GetPropertyReviews/{id:int}")]
+        public async Task<ActionResult<APIResponse>> GetPropertyReviews(int id)
+        {
+            try
+            {
+                IEnumerable<PropertyReview> propertyReviews = await _dbPropRe.GetAllAsync(u => u.Property_Id == id);
+                _response.Result = _mapper.Map<List<PropertyReviewDTO>>(propertyReviews);
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
+        [HttpPost("CreateNewPropertyReview")]
+        [Authorize(Roles = "Admin,Seller,Buyer")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponse>> AddPropertyReview([FromBody] CreatePropertyReviewDTO newReview)
+        {
+            try
+            {
+                if (newReview == null)
+                {
+                    return BadRequest(newReview);
+                }
+
+                PropertyReview review = _mapper.Map<PropertyReview>(newReview);
+
+                //_db.Properties.AddAsync(model);
+                //await _db.SaveChangesAsync();
+                await _dbPropRe.CreateAsync(review);
+                _response.Result = _mapper.Map<PropertyReviewDTO>(review);
+                _response.IsSuccess = true;
+                _response.StatusCode = HttpStatusCode.Created;
+
+                //return CreatedAtRoute("GetProperty", new { id = property.Property_ID }, _response);
             }
             catch (Exception ex)
             {

@@ -2,7 +2,8 @@
 
 namespace CorpEstate.DAL.Repository.IRepository
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IPropertyReviewRepository : IRepository<PropertyReview>
     {
+
     }
 }

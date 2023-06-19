@@ -7,8 +7,10 @@ namespace CorpEstate.BLL.Model
     {
         [Key]
         public int ReviewId { get; set; }
+        [Required]
         public int Rating { get; set; }
         public string Comment { get; set; }
+        [Required]
         [ForeignKey("Property")]
         public int Property_Id { get; set; }
         public virtual Property Property { get; set; }

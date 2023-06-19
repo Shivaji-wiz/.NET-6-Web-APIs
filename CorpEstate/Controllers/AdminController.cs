@@ -45,7 +45,7 @@ namespace CorpEstate.Controllers
             return _response;
         }
 
-        [HttpPut("ApproveProperty")]
+        [HttpPut("ApproveProperty/{id:int}")]
         public async Task<ActionResult<APIResponse>> ApproveProperty(int id, [FromBody] ApprovePropertyDTO ApproveProperty)
         {
             try
