@@ -27,7 +27,7 @@ namespace CorpEstateTest
             _mapperMock = new Mock<IMapper>();
             _repositoryMock = new Mock<IRepository<Property>>();
             // Create an instance of the CRUDController class and inject the mocks
-            _crudController = new CRUDController(_propertyRepositoryMock.Object, _mapperMock.Object);
+            _crudController = new CRUDController(_propertyRepositoryMock.Object,_mapperMock.Object);
         }
 
         [Test]

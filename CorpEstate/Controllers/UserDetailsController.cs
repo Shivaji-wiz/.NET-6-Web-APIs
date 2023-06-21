@@ -27,6 +27,25 @@ namespace CorpEstate.Controllers
             _response = new APIResponse();
         }
 
+        [HttpGet("GetUser")]
+        public async Task<ActionResult<APIResponse>> GetUser(string email)
+        {
+            try
+            {
+                var user = await _dbUser.GetAsync(u => u.Email == email);
+                _response.Result = _mapper.Map<UserDTO>(user);
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+            }
+            return _response;
+        }
+
         [HttpGet("GetAllUsers")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<APIResponse>> GetAllUsers()

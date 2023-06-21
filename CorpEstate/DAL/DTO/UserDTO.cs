@@ -16,8 +16,8 @@ namespace CorpEstate.DAL.DTO
         public string RoleName { get; set; }
         [Required]
         public string Password { get; set; }
-        [Required]
-        public DateTime DOB { get; set; }
+        //[Required]
+        //public DateTime DOB { get; set; }
 
         public DateTime CreatedTime { get; set; }
     }

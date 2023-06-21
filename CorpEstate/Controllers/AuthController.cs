@@ -3,6 +3,7 @@ using CorpEstate.BLL.Model;
 using CorpEstate.DAL.DTO;
 using CorpEstate.DAL.Repository.IRepository;
 using CorpEstate.Services.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Security.Cryptography;
@@ -41,16 +42,16 @@ namespace CorpEstate.Controllers
         }
 
         [HttpPut("Forgot_Password")]
-        public async Task<ActionResult<APIResponse>> UpdatePassword(int id,[FromBody] UpdateUserDTO updateData)
+        public async Task<ActionResult<APIResponse>> UpdatePassword(string email,[FromBody] UpdateUserDTO updateData)
         {
             try
             {
-                if (id == 0 || id != updateData.Id)
+                if (email == null || email != updateData.Email)
                 {
                     return BadRequest();
                 }
 
-                var user = await _dbUser.GetAsync(u => u.Id == id, Tracked: false);
+                var user = await _dbUser.GetAsync(u => u.Email == email, Tracked: false);
 
                 _jwtService.CreatePasswordHash(updateData.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
