@@ -11,5 +11,12 @@ namespace CorpEstate.DAL.Repository
         {
             _db = db;
         }
+
+        public async Task<User> UpdateAsync(User entity)
+        {
+            _db.Users.Update(entity);
+            await _db.SaveChangesAsync();
+            return entity;
+        }
     }
 }
