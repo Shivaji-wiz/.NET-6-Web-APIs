@@ -16,6 +16,7 @@ namespace CorpEstateTest
     {
         private CRUDController _crudController;
         private Mock<IPropertyRepository> _propertyRepositoryMock;
+        private Mock<IPropertyReviewRepository> _propertyReviewRepositoryMock;
         private Mock<IRepository<Property>> _repositoryMock;
         private Mock<IMapper> _mapperMock;
 
@@ -24,10 +25,11 @@ namespace CorpEstateTest
         {
             // Set up the mocks for IPropertyRepository and IMapper
             _propertyRepositoryMock = new Mock<IPropertyRepository>();
+            _propertyReviewRepositoryMock = new Mock<IPropertyReviewRepository>();
             _mapperMock = new Mock<IMapper>();
             _repositoryMock = new Mock<IRepository<Property>>();
             // Create an instance of the CRUDController class and inject the mocks
-            _crudController = new CRUDController(_propertyRepositoryMock.Object,_mapperMock.Object);
+            _crudController = new CRUDController(_propertyRepositoryMock.Object, _propertyReviewRepositoryMock.Object,_mapperMock.Object);
         }
 
         [Test]
